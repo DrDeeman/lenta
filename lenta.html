@@ -1,0 +1,84 @@
+<html>
+<head>
+<style>
+.line, .line2{
+width:100%;
+height:100px;
+overflow-x:hidden;
+}
+.line-block{
+position:relative;
+width:25%;
+height:50px;
+display:inline-block;
+text-align:center;
+box-sizing:border-box;
+border:1px solid black;
+}
+.line-block2{
+left:100%;
+}
+
+</style>
+
+</head>
+<body>
+<div class='line'><div class='line-block'>1</div><div class='line-block'>2</div><div class='line-block'>3</div><div class='line-block'>4</div></div>
+<div class='line2'></div>
+<script>
+
+let line1=document.getElementsByClassName('line')[0];
+let line2 =document.getElementsByClassName('line2')[0];
+let abs =document.documentElement.clientWidth/4;
+let i_line1=0;
+let i_line2=0;
+let f=false;
+setInterval(()=>{
+
+
+
+let [...rest]=line1.childNodes;
+
+rest.forEach((ob,i)=>{
+ob.style.left=`${parseInt(getComputedStyle(ob).left,10)-1}px`;
+if(ob.offsetLeft+parseInt(getComputedStyle(ob).width,10)==(i+i_line1)*abs*-1){
+let div = document.createElement("div");
+div.classList.add("line-block");
+div.classList.add("line-block2");
+div.innerHTML=ob.TextContent || ob.innerText;
+line2.appendChild(div);
+line1.removeChild(line1.childNodes[0]);
+console.log("sd");
+f=true;
+}
+
+
+});
+
+let [...rest2]=line2.childNodes;
+rest2.forEach((ob,i)=>{
+if(ob.offsetLeft+parseInt(getComputedStyle(ob).width,10)==(i-i_line2)*abs*-1){
+let div = document.createElement("div");
+div.classList.add("line-block");
+div.classList.add("line-block2");
+div.innerHTML=ob.TextContent || ob.innerText;
+line1.appendChild(div);
+line1.removeChild(line1.childNodes[0]);
+i_line1--;
+i_line2++;
+}
+ob.style.left=`${parseInt(getComputedStyle(ob).left,10)-1}px`;
+});
+
+if(f){
+i_line1++;
+i_line2--;
+f=false;
+}
+
+
+
+},10);
+</script>
+</body>
+</html>
